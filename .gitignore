@@ -1,0 +1,7 @@
+.directory
+doc/html/
+doc/man/
+example/e1/e1
+example/e1/.obj/
+example/e2/e2
+example/e2/.obj/

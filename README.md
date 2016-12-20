@@ -1,11 +1,14 @@
 # Command-line-option-parser
 A command line option parser for C/C++ projects.
-An alternative to getopt() and getopt_long() by using of callback functions.
+An alternative to getopt() and getopt_long() by using of callback functions in the shape of
+classical function-pointers or as anonymous "lambda" functions in C.
 
 # Advantages:
 
 - Avoiding of global variables like "optind" or "optarg".
 - Using of a callback function for each option instead of (confusing huge) switch-case statements. (Avoiding of spaghetti-code.)
+- Use of anonymous callback functions (lambda functions) possible.
+  That means implementation of the function body directly in the option-list initializer possible.
 - Object oriented flavor: Short option-name (if given), long option-name (if given) and help-text (if given)
   are bound together in a single object by a corresponding callback function.
 - Avoiding of redundance: If you'll change a option name, so you have to do this on one place in your source-code only.
@@ -24,6 +27,8 @@ struct MY_DATA
 {
   // My data which shall be modified by the options...
   // If you'll avoid global variables.
+  bool verbose;
+  //...
 };
 
 static int optOneOfMyCallbackFunction( struct BLOCK_FUNCTION_ARG_T* pArg )
@@ -37,18 +42,25 @@ int main( int argc, char** ppArgv )
 {
    struct OPTION_BLOCK_T blockList[] =
    {
-      {
+      { // Using of classical function-pointer as callback function.
          .optFunction = optOneOfMyCallbackFunction,
          .hasArg      = NO_ARG,
          .shortOpt    = 'o',
          .longOpt     = "myoption",
          .helpText    = "bla bla bla :-)"
       },
+      { // Using of anonymous callback function which can be implemented directly in the initializer.
+         OPT_LAMBDA( pArg, { ((struct MY_DATA*)pArg->pUser)->verbose = true; return 0; }),
+         .hasArg      = NO_ARG,
+         .shortOpt    = 'v',
+         .longOpt     = "verbose",
+         .helpText    = "Be verbose"
+      },
       // Further options...
       OPTION_BLOCKLIST_END_MARKER
    };
 
-   struct MY_DATA myData = { /* initialize */ };
+   struct MY_DATA myData = { .verbose = false; };
 
    int i = parseCommandLineOptions( argc, ppArgv, blockList, &myData );
    if( i < 0 )
@@ -74,6 +86,7 @@ struct MY_DATA
 {
   // My data which shall be modified by the options...
   // If you'll avoid global variables.
+  bool verbose;
 };
 
 static int optOneOfMyCallbackFunction( struct BLOCK_FUNCTION_ARG_T* pArg )
@@ -88,18 +101,25 @@ int main( int argc, char** ppArgv )
    int i;
    struct OPTION_BLOCK_T blockList[] =
    {
-      {
+      { // Using of classical function-pointer as callback function.
          .optFunction = optOneOfMyCallbackFunction,
          .hasArg      = NO_ARG,
          .shortOpt    = 'o',
          .longOpt     = "myoption",
          .helpText    = "bla bla bla :-)"
       },
+      { // Using of anonymous callback function which can be implemented directly in the initializer.
+         OPT_LAMBDA( pArg, { ((struct MY_DATA*)pArg->pUser)->verbose = true; return 0; }),
+         .hasArg      = NO_ARG,
+         .shortOpt    = 'v',
+         .longOpt     = "verbose",
+         .helpText    = "Be verbose"
+      },
       // Further options...
       OPTION_BLOCKLIST_END_MARKER
    };
 
-   struct MY_DATA myData = { /* initialize */ };
+   struct MY_DATA myData = { .verbose = false; };
 
    for( i = 1; i < argc; i++ )
    {

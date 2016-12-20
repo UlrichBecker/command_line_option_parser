@@ -15,8 +15,8 @@ VPATH  = $(BASEDIR)
 INCDIR = $(BASEDIR)
 CFLAGS = -g -O0
 
-CC=gcc
-CFLAGS +=-I$(INCDIR)
+CC     ?= gcc
+CFLAGS += $(addprefix -I,$(INCDIR))
 
 OBJDIR=.obj
 

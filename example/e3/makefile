@@ -1,26 +1,24 @@
 ###############################################################################
 ##                                                                           ##
-##  Makefile for example e1 of the command-line option parser for classical  ##
-##  order.                                                                   ##
+## Makefile for example e3 of the command-line option parser for mixed order ##
 ##                                                                           ##
 ##---------------------------------------------------------------------------##
-## File:   ~/example/e1/makefile                                             ##
+## File:   ~/example/e3/makefile                                             ##
 ## Author: Ulrich Becker                                                     ##
-## Date:   10.11.2016                                                        ##
+## Date:   12.11.2016                                                        ##
 ###############################################################################
 BASEDIR = ../../src
-SOURCES = cmd_opt_ex1.c $(BASEDIR)/parse_opts.c
-EXE_NAME = e1
+SOURCES = cmd_opt_ex3.c $(BASEDIR)/parse_opts.c
+EXE_NAME = e3
 
-VPATH= $(BASEDIR)
+VPATH  = $(BASEDIR)
 INCDIR = $(BASEDIR)
 CFLAGS = -g -O0
 
-CC     ?=gcc
+CC     ?= gcc
 CFLAGS += $(addprefix -I,$(INCDIR))
 
-OBJDIR=.obj
-
+OBJDIR = .obj
 
 OBJ = $(addprefix $(OBJDIR)/,$(addsuffix .o,$(notdir $(basename $(SOURCES)))))
 
@@ -34,7 +32,7 @@ $(OBJDIR)/%.o: %.c $(SOURCES) $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(EXE_NAME): $(OBJ)
-	gcc -o $@ $^ $(CFLAGS) $(LIBS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 .PHONY: clean
 clean:

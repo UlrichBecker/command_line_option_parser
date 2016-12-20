@@ -10,6 +10,8 @@
 /*  Updates:                                                                 */
 /*! @example cmd_opt_ex1.c Example for classical parsing.                    */
 /*! @example cmd_opt_ex2.c Example for mixed parsing.                        */
+/*! @example cmd_opt_ex3.c Example for using anonymous (lambda) functions as */
+/*                         callback function.                                */
 /*****************************************************************************/
 /*
  * MIT License
@@ -92,6 +94,39 @@ struct BLOCK_FUNCTION_ARG_T
  *             the return value of the parser will be -1.
  */
 typedef int (*OPT_BLOCK_F)( struct BLOCK_FUNCTION_ARG_T* pArg );
+
+/*!
+ * @brief Helper-macro for OPT_LAMBDA
+ */
+#define _LAMBDA_(L_) ({ L_ _;})
+
+/*!
+ * @brief Macro for implementing anonymous functions directly in the initializer
+ *        of the option list.
+ *
+ * This "nice to have" macro is useful when the call-back function is very small,
+ * e.g. for setting or resetting flags.
+ * Example:
+ * @code
+ * struct OPTION_BLOCK_T blockList[] =
+ * {
+ *    {
+ *       OPT_LAMBDA( pArg, { ((struct MY_DATA*)pArg->pUser)->verbose = true; return 0; }),
+ *       .hasArg      = NO_ARG,
+ *       .shortOpt    = 'v',
+ *       .longOpt     = "verbose",
+ *       .helpText    = "Be verbose"
+ *    },
+ *    // Further options...
+ *    OPTION_BLOCKLIST_END_MARKER
+ * };
+ * @endcode
+ * @param argName Name of the argument variable which is
+ *                the pointer to the info-block of type struct BLOCK_FUNCTION_ARG_T*.
+ * @param body    Function body in {}. @see OPT_BLOCK_F
+ */
+#define OPT_LAMBDA( argName, body ) \
+   .optFunction = _LAMBDA_( int _( struct BLOCK_FUNCTION_ARG_T* argName ) body )
 
 /*!
  * @brief Definition of the option-type.

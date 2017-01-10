@@ -264,7 +264,7 @@ typedef  struct OPTION_BLOCK_T* BLK_LIST_ITERATOR_T;
  * each loop-step depending on the index "i" or by using
  * a FSM (finite state machine).
  *
- * @param offset 
+ * @param offset Start-offset, initializer of the index for ppArgv[].
  * @param argc The first argument of your main() function.
  * @param ppArgv Argument vector the second argument of your main() function.
  * @param optBlockList Pointer to your defined option-block-list.

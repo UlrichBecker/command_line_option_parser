@@ -14,7 +14,11 @@ classical function-pointers or as anonymous "lambda" functions in C.
 - Avoiding of redundance: If you'll change a option name, so you have to do this on one place in your source-code only.
 - Commands by mixed order of options and non-options are possible (see example e2).
 
-Excuses my coding-style and my bad english ;-)
+If you intend to write your project in C++11 just take a look in the following link:
+
+https://github.com/UlrichBecker/command_line_option_parser_cpp11
+
+Excuses my Eric Allman coding-style and my bad English ;-)
 
 Code-example
 ------------

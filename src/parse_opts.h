@@ -96,9 +96,12 @@ struct BLOCK_FUNCTION_ARG_T
 typedef int (*OPT_BLOCK_F)( struct BLOCK_FUNCTION_ARG_T* pArg );
 
 /*!
- * @brief Helper-macro for OPT_LAMBDA
+ * @brief Helper-macro for OPT_LAMBDA. Makes anonymous functions for C possible.
+ * @see OPT_LAMBDA
  */
-#define _LAMBDA_(L_) ({ L_ _;})
+#if !defined(_LAMBDA_) || defined(__DOXYGEN__)
+   #define _LAMBDA_(L_) ({ L_ _;})
+#endif
 
 /*!
  * @brief Macro for implementing anonymous functions directly in the initializer

@@ -109,6 +109,10 @@ typedef int (*OPT_BLOCK_F)( struct BLOCK_FUNCTION_ARG_T* pArg );
  *
  * This "nice to have" macro is useful when the call-back function is very small,
  * e.g. for setting or resetting flags.
+ *
+ * @note Keep in mind that lambda-functions are a matter of nested functions.
+ *       This macro can only be used if your compiler supported them.
+ *
  * Example:
  * @code
  * struct OPTION_BLOCK_T blockList[] =

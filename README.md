@@ -22,6 +22,9 @@ Excuses my Eric Allman coding-style and my bad English ;-)
 
 Code-example
 ------------
+You can also find a practical example of using tis module in this repository: 
+https://github.com/UlrichBecker/ioctl4bash
+
 Example for classical order: first options, second non-options,
 ```c
 #include <parse_opts.h>

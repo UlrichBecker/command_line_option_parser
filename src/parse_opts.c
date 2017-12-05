@@ -59,6 +59,14 @@ static void shortOptionalOptionErrorMessage( const char* prgName,
 /*!----------------------------------------------------------------------------
 @see parse_opts.h
 */
+
+#define _RETURN_HANDLING( f ) \
+   ret = (f);                 \
+   if( ret < 0 )              \
+      return ret;             \
+   if( ret > 0 )              \
+      error = true;           \
+
 int parseCommandLineOptionsAt( int offset,
                                int argc,
                                char* const ppAgv[],
@@ -136,11 +144,7 @@ int parseCommandLineOptionsAt( int offset,
             case NO_ARG:
             {
                arg.optArg = NULL;
-               ret = arg.pCurrentBlock->optFunction( &arg );
-               if( ret < 0 )
-                  return ret;
-               if( ret > 0 )
-                  error = true;
+               _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                break;
             }
             case REQUIRED_ARG:
@@ -154,11 +158,7 @@ int parseCommandLineOptionsAt( int offset,
                }
                arg.argvIndex++;
                arg.optArg = ppAgv[arg.argvIndex];
-               ret = arg.pCurrentBlock->optFunction( &arg );
-               if( ret < 0 )
-                  return ret;
-               if( ret > 0 )
-                  error = true;
+               _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                break;
             }
             case OPTIONAL_ARG:
@@ -168,11 +168,7 @@ int parseCommandLineOptionsAt( int offset,
                   if( ((arg.argvIndex+1) == argc) || (ppAgv[arg.argvIndex+1][0] != '=') )
                   {  /* No argument */
                      arg.optArg = NULL;
-                     ret = arg.pCurrentBlock->optFunction( &arg );
-                     if( ret < 0 )
-                        return ret;
-                     if( ret > 0 )
-                        error = true;
+                     _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                      break;
                   }
                   if( ppAgv[arg.argvIndex+1][0] == '=' )
@@ -181,11 +177,7 @@ int parseCommandLineOptionsAt( int offset,
                      if( ppAgv[arg.argvIndex][1] != '\0' )
                      {  /* "--OPTION =ARGUMENT" */
                         arg.optArg = &ppAgv[arg.argvIndex][1];
-                        ret = arg.pCurrentBlock->optFunction( &arg );
-                        if( ret < 0 )
-                           return ret;
-                        if( ret > 0 )
-                           error = true;
+                        _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                         break;
                      }
                      if( (arg.argvIndex+1) == argc )
@@ -197,22 +189,14 @@ int parseCommandLineOptionsAt( int offset,
                      /* "--OPTION = ARGUMENT" */
                      arg.argvIndex++;
                      arg.optArg = ppAgv[arg.argvIndex];
-                     ret = arg.pCurrentBlock->optFunction( &arg );
-                     if( ret < 0 )
-                        return ret;
-                     if( ret > 0 )
-                        error = true;
+                     _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                   }
                   break;
                } /* if( pCurrent[tl] == '\0' ) */
                if( pCurrent[tl+1] != '\0' )
                {  /* "--OPTION=ARGUMENT" */
                   arg.optArg = &pCurrent[tl+1];
-                  ret = arg.pCurrentBlock->optFunction( &arg );
-                  if( ret < 0 )
-                     return ret;
-                  if( ret > 0 )
-                     error = true;
+                  _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                   break;
                }
                if( (arg.argvIndex+1) == argc )
@@ -224,11 +208,7 @@ int parseCommandLineOptionsAt( int offset,
                /* "--OPTION= ARGUMENT" */
                arg.argvIndex++;
                arg.optArg = ppAgv[arg.argvIndex];
-               ret = arg.pCurrentBlock->optFunction( &arg );
-               if( ret < 0 )
-                  return ret;
-               if( ret > 0 )
-                  error = true;
+               _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                break;
             } /* End of case OPTIONAL_ARG: */
             default: assert( false ); break;
@@ -264,11 +244,7 @@ int parseCommandLineOptionsAt( int offset,
             case NO_ARG:
             {
                arg.optArg = NULL;
-               ret = arg.pCurrentBlock->optFunction( &arg );
-               if( ret < 0 )
-                  return ret;
-               if( ret > 0 )
-                  error = true;
+               _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                break;
             }
             case REQUIRED_ARG:
@@ -283,11 +259,7 @@ int parseCommandLineOptionsAt( int offset,
                if( pCurrent[1] != '\0' )
                {
                   arg.optArg = &pCurrent[1];
-                  ret = arg.pCurrentBlock->optFunction( &arg );
-                  if( ret < 0 )
-                     return ret;
-                  if( ret > 0 )
-                     error = true;
+                  _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
 
                   do
                      pCurrent++;
@@ -297,11 +269,7 @@ int parseCommandLineOptionsAt( int offset,
                {
                   arg.argvIndex++;
                   arg.optArg = ppAgv[arg.argvIndex];
-                  ret = arg.pCurrentBlock->optFunction( &arg );
-                  if( ret < 0 )
-                     return ret;
-                  if( ret > 0 )
-                     error = true;
+                  _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                }
                break;
             }
@@ -349,12 +317,8 @@ int parseCommandLineOptionsAt( int offset,
                }
                else
                   arg.optArg = NULL; /* No argument */
-
-               ret = arg.pCurrentBlock->optFunction( &arg );
-               if( ret < 0 )
-                  return ret;
-               if( ret > 0 )
-                  error = true;
+                
+               _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
 
                if( arg.optArg == NULL )
                   break;

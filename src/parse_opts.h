@@ -140,14 +140,24 @@ typedef int (*OPT_BLOCK_F)( struct BLOCK_FUNCTION_ARG_T* pArg );
  */
 typedef enum
 {
-   NO_ARG       = 0, //!<@brief Option has no argument.
-
-   REQUIRED_ARG = 1, //!<@brief Option needs a argument.
-
+#ifndef CONFIG_CLOP_NO_NO_ARG
+   NO_ARG       = 0  //!<@brief Option has no argument.
+ #if !defined( CONFIG_CLOP_NO_REQUIRED_ARG ) || !defined( CONFIG_CLOP_NO_OPTIONAL_ARG )
+   ,
+ #endif
+#endif
+#ifndef CONFIG_CLOP_NO_REQUIRED_ARG
+   REQUIRED_ARG = 1  //!<@brief Option needs a argument.
+ #if !defined( CONFIG_CLOP_NO_OPTIONAL_ARG )
+   ,
+ #endif
+#endif
+#ifndef CONFIG_CLOP_NO_OPTIONAL_ARG
    OPTIONAL_ARG = 2  //!<@brief Option can have a argument but must not. \n
                      //!<@note  If a argument for this option type is given, \n
                      //! so the usage of the '=' character in the command line
                      //! becomes necessary.
+#endif
 } ARG_REQUIRE_T;
 
 /*!

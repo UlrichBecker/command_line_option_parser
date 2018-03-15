@@ -38,6 +38,13 @@
 #include <stdbool.h>
 #include <assert.h>
 
+#if defined( CONFIG_CLOP_NO_NO_ARG )          \
+    && defined( CONFIG_CLOP_NO_REQUIRED_ARG ) \
+    && defined( CONFIG_CLOP_NO_OPTIONAL_ARG )
+ #error Not allowed to define all three macros!
+#endif
+
+#ifndef CONFIG_CLOP_NO_OPTIONAL_ARG
 /*-----------------------------------------------------------------------------
 */
 static void longOptionalOptionErrorMessage( const char* prgName,
@@ -55,6 +62,7 @@ static void shortOptionalOptionErrorMessage( const char* prgName,
    fprintf( stderr, "%s: missing argument after '=' of short option -%c\n",
             prgName, optionName );
 }
+#endif /* ifndef CONFIG_CLOP_NO_OPTIONAL_ARG */
 
 /*!----------------------------------------------------------------------------
 @see parse_opts.h
@@ -141,12 +149,15 @@ int parseCommandLineOptionsAt( int offset,
 
          switch( arg.pCurrentBlock->hasArg )
          {
+         #ifndef CONFIG_CLOP_NO_NO_ARG
             case NO_ARG:
             {
                arg.optArg = NULL;
                _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                break;
             }
+         #endif /* ifndef CONFIG_CLOP_NO_NO_ARG */
+         #ifndef CONFIG_CLOP_NO_REQUIRED_ARG
             case REQUIRED_ARG:
             {
                if( (arg.argvIndex+1) == argc )
@@ -161,6 +172,8 @@ int parseCommandLineOptionsAt( int offset,
                _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                break;
             }
+         #endif /* ifndef CONFIG_CLOP_NO_REQUIRED_ARG */
+         #ifndef CONFIG_CLOP_NO_OPTIONAL_ARG
             case OPTIONAL_ARG:
             {
                if( pCurrent[tl] == '\0' )
@@ -211,6 +224,7 @@ int parseCommandLineOptionsAt( int offset,
                _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                break;
             } /* End of case OPTIONAL_ARG: */
+         #endif /* ifndef CONFIG_CLOP_NO_OPTIONAL_ARG */
             default: assert( false ); break;
          } /* End of switch( arg.pCurrentBlock->hasArg ) */
          continue; /* for( i = arg.argvIndex; arg.argvIndex < argc; arg.argvIndex++ ) */
@@ -241,12 +255,15 @@ int parseCommandLineOptionsAt( int offset,
 
          switch( arg.pCurrentBlock->hasArg )
          {
+         #ifndef CONFIG_CLOP_NO_NO_ARG
             case NO_ARG:
             {
                arg.optArg = NULL;
                _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                break;
             }
+         #endif    
+         #ifndef CONFIG_CLOP_NO_REQUIRED_ARG
             case REQUIRED_ARG:
             {
                if( (pCurrent[1] == '\0') && ((arg.argvIndex+1) == argc) )
@@ -273,6 +290,8 @@ int parseCommandLineOptionsAt( int offset,
                }
                break;
             }
+         #endif /* ifndef CONFIG_CLOP_NO_REQUIRED_ARG */
+         #ifndef CONFIG_CLOP_NO_OPTIONAL_ARG
             case OPTIONAL_ARG:
             {
                if( pCurrent[1] == '=' )
@@ -327,6 +346,7 @@ int parseCommandLineOptionsAt( int offset,
                   pCurrent++;
                break;
             } /* End of case OPTIONAL_ARG */
+         #endif /* ifndef CONFIG_CLOP_NO_OPTIONAL_ARG */
             default: assert( false ); break;
          } /* End of switch( arg.pCurrentBlock->hasArg ) */
 
@@ -346,9 +366,15 @@ void printOption( FILE* pStream, const struct OPTION_BLOCK_T* pOptionBlock )
 
    switch( pOptionBlock->hasArg )
    {
+   #ifndef CONFIG_CLOP_NO_NO_ARG
       case NO_ARG:                             break;
+   #endif
+   #ifndef CONFIG_CLOP_NO_REQUIRED_ARG
       case REQUIRED_ARG: pParam = " PARAM";    break;
+   #endif
+   #ifndef CONFIG_CLOP_NO_OPTIONAL_ARG
       case OPTIONAL_ARG: pParam = " [=PARAM]"; break;
+   #endif
       default: assert( false ); break;
    }
 

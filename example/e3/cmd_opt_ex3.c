@@ -12,6 +12,17 @@
 /*! @date    20.12.2016                                                      */
 /*! @see     parse_opts.h                                                    */
 /*****************************************************************************/
+
+/*
+ * NOTE:
+ * If you have been made and installed the shared-library via the makefile in
+ * /src/makefile just compile this example by the following line:
+ *
+ * gcc -o e3 -lParseOptsC cmd_opt_ex3.c
+ *
+ * otherwise invoke the makefile in this directory.
+ */
+
 #include <parse_opts.h>
 #include <stdlib.h>
 #include <assert.h>

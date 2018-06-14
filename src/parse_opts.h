@@ -5,6 +5,7 @@
 /*---------------------------------------------------------------------------*/
 /*! @file    parse_opts.h                                                    */
 /*! @see     parse_opts.c                                                    */
+/*  Library: libParseOptsC.so, resp: -lParseOptsC                            */
 /*! @author  Ulrich Becker                                                   */
 /*! @date    25.10.2016                                                      */
 /*  Updates:                                                                 */

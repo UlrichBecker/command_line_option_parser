@@ -12,7 +12,7 @@
 
 SUMMARY          = "Shared-library of the command-line-option-parser for C/C++"
 
-SECTION          = "library"
+SECTION          = "libs"
 S                = "${WORKDIR}/git"
 LICENSE          = "MIT"
 LIC_FILES_CHKSUM = "file://${S}/LICENSE;md5=4da5aa79bdb6df631c5f8ceb2c6a52cb"

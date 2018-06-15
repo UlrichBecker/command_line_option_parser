@@ -13,7 +13,7 @@ classical function-pointers or as anonymous "lambda" functions in C.
   are bound together in a single object by a corresponding callback function.
 - Avoiding of redundance: If you'll change a option name, so you have to do this on one place in your source-code only.
 - Commands by mixed order of options and non-options are possible (see example e2).
-- Scalable, if a serten kind of option-type won't used for your project just define the corresponding compiler-switch (CONFIG_CLOP_NO_...) in your Makefile respectively build-system to reduce memory.
+- Scalable, if a serten kind of option-type won't used for your project just define the corresponding compiler-switch (CONFIG_CLOP_NO_...) in your Makefile respectively build-system to reduce memory, provided you'll link the source-code directly to your project rather than the shared-library. 
 
 If you intend to write your project in C++11 just take a look in the following link:
 

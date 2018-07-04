@@ -33,7 +33,9 @@ $(LIB_FILENAME).$(LIB_VERSION).$(LIB_REVISION): $(SOURCE_NAME).o
 
 .PHONY: install
 install: all
+	mkdir -p $(HEADDER_DIR)
 	cp $(SOURCE_NAME).h $(HEADDER_DIR)
+	mkdir -p $(LIB_DIR)
 	cp $(LIB_FILENAME).$(LIB_VERSION).$(LIB_REVISION) $(LIB_DIR)
 	cd $(LIB_DIR); \
 	ln -sf $(LIB_FILENAME).$(LIB_VERSION).$(LIB_REVISION) $(LIB_FILENAME).$(LIB_VERSION); \

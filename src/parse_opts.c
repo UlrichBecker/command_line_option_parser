@@ -36,6 +36,7 @@
 #include <parse_opts.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <assert.h>
 
 #if defined( CONFIG_CLOP_NO_NO_ARG )          \

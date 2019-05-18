@@ -114,6 +114,8 @@ int parseCommandLineOptionsAt( int offset,
          break; /* Argument is not a option but a negative number. */
 #endif
 
+      arg.optArg = NULL;
+
       if( *pCurrent == '-' ) /* Long option? */
       { /* Yes */
          pCurrent++;
@@ -153,7 +155,6 @@ int parseCommandLineOptionsAt( int offset,
          #ifndef CONFIG_CLOP_NO_NO_ARG
             case NO_ARG:
             {
-               arg.optArg = NULL;
                _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                break;
             }
@@ -181,7 +182,6 @@ int parseCommandLineOptionsAt( int offset,
                {
                   if( ((arg.argvIndex+1) == argc) || (ppAgv[arg.argvIndex+1][0] != '=') )
                   {  /* No argument */
-                     arg.optArg = NULL;
                      _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                      break;
                   }
@@ -259,7 +259,6 @@ int parseCommandLineOptionsAt( int offset,
          #ifndef CONFIG_CLOP_NO_NO_ARG
             case NO_ARG:
             {
-               arg.optArg = NULL;
                _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
                break;
             }
@@ -335,9 +334,7 @@ int parseCommandLineOptionsAt( int offset,
                      }
                   }
                }
-               else
-                  arg.optArg = NULL; /* No argument */
-                
+
                _RETURN_HANDLING( arg.pCurrentBlock->optFunction( &arg ) )
 
                if( arg.optArg == NULL )

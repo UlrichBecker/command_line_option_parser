@@ -45,13 +45,27 @@
  #error Not allowed to define all three macros!
 #endif
 
+#define ESC_FG_RED "\e[31m"
+#define ESC_BOLD   "\e[1m"
+#define ESC_NORMAL "\e[0m"
+
+#ifdef CONFIG_CLOP_NO_ESC_SEQUENCES
+  #define ESC_ERROR
+  #define ESC_END
+#else
+  #define ESC_ERROR ESC_BOLD ESC_FG_RED
+  #define ESC_END   ESC_NORMAL
+#endif
+
 #ifndef CONFIG_CLOP_NO_OPTIONAL_ARG
 /*-----------------------------------------------------------------------------
 */
 static void longOptionalOptionErrorMessage( const char* prgName,
                                             const char* optionName )
 {
-   fprintf( stderr, "%s: missing argument after '=' of long option --%s\n",
+   fprintf( stderr, ESC_ERROR
+                    "%s: missing argument after '=' of long option --%s\n"
+                    ESC_END,
             prgName, optionName );
 }
 
@@ -60,7 +74,9 @@ static void longOptionalOptionErrorMessage( const char* prgName,
 static void shortOptionalOptionErrorMessage( const char* prgName,
                                              char optionName )
 {
-   fprintf( stderr, "%s: missing argument after '=' of short option -%c\n",
+   fprintf( stderr, ESC_ERROR
+                    "%s: missing argument after '=' of short option -%c\n"
+                    ESC_END,
             prgName, optionName );
 }
 #endif /* ifndef CONFIG_CLOP_NO_OPTIONAL_ARG */
@@ -104,7 +120,7 @@ int parseCommandLineOptionsAt( int offset,
       pCurrent = &ppAgv[arg.argvIndex][1];
       if( *pCurrent == '\0' )
       {
-         fprintf( stderr, "%s: missing option -?\n", ppAgv[0] );
+         fprintf( stderr, ESC_ERROR "%s: missing option -?\n" ESC_END, ppAgv[0] );
          return -1;
       }
 
@@ -121,7 +137,7 @@ int parseCommandLineOptionsAt( int offset,
          pCurrent++;
          if( *pCurrent == '\0' )
          {
-            fprintf( stderr, "%s: missing long option --???\n", ppAgv[0] );
+            fprintf( stderr, ESC_ERROR "%s: missing long option --???\n" ESC_END, ppAgv[0] );
             return -1;
          }
 
@@ -145,7 +161,7 @@ int parseCommandLineOptionsAt( int offset,
          if( arg.pCurrentBlock->optFunction == NULL )
          {
             error = true;
-            fprintf( stderr, "%s: unrecognized long option --%s\n",
+            fprintf( stderr, ESC_ERROR "%s: unrecognized long option --%s\n" ESC_END,
                      ppAgv[0], pCurrent );
             continue; /* Of: for( arg.argvIndex = 1; arg.argvIndex < argc; arg.argvIndex++ ) */
          }
@@ -165,7 +181,7 @@ int parseCommandLineOptionsAt( int offset,
                if( (arg.argvIndex+1) == argc )
                {
                   fprintf( stderr,
-                           "%s: missing argument of long option --%s\n",
+                           ESC_ERROR "%s: missing argument of long option --%s\n" ESC_END,
                            ppAgv[0], arg.pCurrentBlock->longOpt );
                   return -1;
                }
@@ -248,7 +264,7 @@ int parseCommandLineOptionsAt( int offset,
          {
             error = true;
             fprintf( stderr,
-                     "%s: unrecognized option -%c\n",
+                     ESC_ERROR "%s: unrecognized option -%c\n" ESC_END,
                      ppAgv[0], *pCurrent );
             pCurrent++;
             continue;
@@ -269,7 +285,7 @@ int parseCommandLineOptionsAt( int offset,
                if( (pCurrent[1] == '\0') && ((arg.argvIndex+1) == argc) )
                {
                   fprintf( stderr,
-                           "%s: missing argument for option \'%c\'\n",
+                           ESC_ERROR "%s: missing argument for option \'%c\'\n" ESC_END,
                            ppAgv[0], *pCurrent );
                   return -1;
                }

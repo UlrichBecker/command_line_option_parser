@@ -1,0 +1,5 @@
+@PACKAGE_INIT@
+
+include(${CMAKE_CURRENT_LIST_DIR}/command_line_option_parserTargets.cmake)
+
+check_required_components(command_line_option_parser)

@@ -143,3 +143,20 @@ int main( int argc, char** ppArgv )
    return EXIT_SUCCESS;
 }
 ```
+
+
+## CMake integration
+
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+    command_line_option_parser
+    GIT_REPOSITORY https://github.com/UlrichBecker/command_line_option_parser.git
+    GIT_TAG master
+    GIT_SHALLOW TRUE
+    FIND_PACKAGE_ARGS NAMES command_line_option_parser)
+FetchContent_MakeAvailable(command_line_option_parser)
+
+target_link_libraries(app command_line_option_parser::command_line_option_parser)
+
+```

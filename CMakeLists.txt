@@ -8,7 +8,7 @@ add_library(command_line_option_parser::command_line_option_parser ALIAS command
 
 include(GNUInstallDirs)
 
-target_include_directories(command_line_option_parser PRIVATE 
+target_include_directories(command_line_option_parser PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/command_line_option_parser>
 )
